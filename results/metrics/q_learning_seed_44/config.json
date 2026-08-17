@@ -1,0 +1,22 @@
+{
+  "agent_hyperparameters": {
+    "discount_factor": 0.95,
+    "exploration_decay": 0.995,
+    "exploration_rate": 0.35,
+    "learning_rate": 0.25,
+    "min_exploration_rate": 0.05,
+    "seed": 44
+  },
+  "agent_type": "q_learning",
+  "experiment": {
+    "disruption_episode": 500,
+    "episodes": 1000,
+    "evaluation_interval": 25,
+    "max_steps_per_episode": 40,
+    "recovery_efficiency": 0.75,
+    "recovery_success_rate": 0.8,
+    "recovery_window": 25
+  },
+  "scenario": "central_route_closure",
+  "seed": 44
+}

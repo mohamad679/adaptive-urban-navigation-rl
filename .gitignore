@@ -31,3 +31,9 @@ dist/
 *.pt
 *.pth
 *.ckpt
+.matplotlib-cache/
+__pycache__/
+.pytest_cache/
+*.pyc
+# Local Codex/codebase indexing
+.codebase-memory/

@@ -1,0 +1,11 @@
+{
+  "agent_types": ["q_learning", "dqn"],
+  "disruption_episode": 500,
+  "episodes": 1000,
+  "max_steps_per_episode": 40,
+  "recovery_efficiency": 0.75,
+  "recovery_success_rate": 0.8,
+  "recovery_window": 25,
+  "scenario": "central_route_closure",
+  "seeds": [11, 22, 33, 44, 55]
+}

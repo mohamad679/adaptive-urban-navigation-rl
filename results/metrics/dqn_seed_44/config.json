@@ -1,0 +1,25 @@
+{
+  "agent_hyperparameters": {
+    "batch_size": 32,
+    "discount_factor": 0.95,
+    "exploration_decay": 0.995,
+    "exploration_rate": 0.4,
+    "learning_rate": 0.001,
+    "min_exploration_rate": 0.05,
+    "replay_capacity": 5000,
+    "seed": 44,
+    "target_update_interval": 50
+  },
+  "agent_type": "dqn",
+  "experiment": {
+    "disruption_episode": 500,
+    "episodes": 1000,
+    "evaluation_interval": 25,
+    "max_steps_per_episode": 40,
+    "recovery_efficiency": 0.75,
+    "recovery_success_rate": 0.8,
+    "recovery_window": 25
+  },
+  "scenario": "central_route_closure",
+  "seed": 44
+}

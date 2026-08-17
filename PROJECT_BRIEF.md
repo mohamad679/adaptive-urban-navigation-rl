@@ -106,7 +106,7 @@ It should be used to determine:
 
 * whether the goal is reachable
 * optimal path length
-* optimal path cost
+* optimal path return under the configured reward function
 * route efficiency
 * regret relative to an optimal route
 
@@ -156,7 +156,7 @@ The core project should measure:
 2. Mean episodic return
 3. Path length
 4. Route efficiency
-5. Adaptation latency
+5. Recovery-window onset latency
 6. Cumulative regret
 
 ### Route Efficiency
@@ -167,13 +167,15 @@ A useful definition is based on comparison with the optimal path:
 
 The exact handling of failed episodes must be documented.
 
-### Adaptation Latency
+### Recovery-Window Latency
 
-Adaptation latency should measure how long the agent takes to recover after disruption.
+Recovery-window onset latency should measure how long the agent takes to recover after disruption.
 
 The recovery criterion and averaging window must be specified before interpreting the final experimental results.
 
 Do not change the definition after observing results merely to obtain a more favourable result.
+
+Immediate post-disruption robustness should be reported separately from continued-learning recovery. A successful greedy no-update evaluation immediately after disruption must not be interpreted as proof of new post-disruption learning.
 
 ### Regret
 
@@ -292,7 +294,7 @@ Clearly mark the disruption episode.
 Compare Q-learning and DQN using meaningful evaluation metrics such as:
 
 * route efficiency
-* adaptation latency
+* recovery-window onset latency
 * regret
 * success rate
 

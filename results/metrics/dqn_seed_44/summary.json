@@ -1,0 +1,9 @@
+{
+  "cumulative_regret": 6508.0,
+  "mean_episodic_return": -3.85,
+  "mean_path_length": 7.13151364764268,
+  "mean_route_efficiency": 0.80575,
+  "recovery_window_confirmation_latency": 65,
+  "recovery_window_onset_latency": 41,
+  "success_rate": 0.806
+}

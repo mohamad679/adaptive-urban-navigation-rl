@@ -1,0 +1,16 @@
+{
+  "agent_type": "q_learning",
+  "disrupted": true,
+  "episodic_return": -192.0,
+  "exploration_rate": 0.05,
+  "optimal_path_length": 8,
+  "optimal_path_return": 13.0,
+  "path_length": null,
+  "post_disruption_training_episodes": 0,
+  "regret": 32.0,
+  "route_efficiency": 0.0,
+  "scenario": "central_route_closure",
+  "seed": 55,
+  "steps": 40,
+  "success": false
+}
