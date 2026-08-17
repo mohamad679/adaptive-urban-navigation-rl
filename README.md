@@ -4,6 +4,14 @@ This repository is a small, reproducible research benchmark for studying how rei
 
 The project is deliberately modest: it is a deterministic computational benchmark, not a model of real human cognition or real urban mobility.
 
+## At a Glance
+
+- Deterministic `7 x 5` grid-navigation benchmark with a central route closure.
+- Agents: tabular Q-learning and a small DQN baseline.
+- Main experiment: five fixed seeds, `11, 22, 33, 44, 55`.
+- Evaluation separates immediate zero-update post-disruption robustness from continued-learning recovery.
+- Saved outputs include per-episode records, summaries, aggregate metrics, generated figures, and automated tests.
+
 ## Research Question
 
 How quickly can reinforcement-learning agents adapt their navigation policy after an unexpected disruption in an urban environment?
@@ -30,6 +38,10 @@ Default rewards are:
 
 The default scenario is `central_route_closure`: the agent starts at `(0, 2)` and navigates to `(6, 2)` in a `7 x 5` grid. After episode 500 and before episode 501, the route segment between `(2, 2)` and `(3, 2)` is closed. The shortest path remains reachable but changes from length 6 to length 8.
 
+![Deterministic grid navigation environment with central route closure](results/figures/figure_1_environment.png)
+
+*Figure 1. The marked road segment is available before disruption and closed after episode 500.*
+
 ## Baselines and RL Agents
 
 The shortest-path oracle uses BFS. It is not a learned agent; it is used to verify reachability and compute optimal path length, route efficiency, and regret.
@@ -47,6 +59,8 @@ The main experiment uses five fixed seeds:
 
 `11, 22, 33, 44, 55`
 
+The default benchmark configuration lives in `configs/default_experiment.json`. It defines the default seeds, episode schedule, recovery thresholds, step budget, and scenario. The runner reads this file by default.
+
 Default schedule:
 
 - episodes `1-500`: original environment
@@ -58,7 +72,7 @@ After each training episode, the current policy is evaluated in a separate copie
 Run the full experiment:
 
 ```bash
-python3 scripts/run_experiments.py --episodes 1000 --disruption-episode 500 --max-steps 40 --include-dqn
+python3 scripts/run_experiments.py --include-dqn
 ```
 
 ## Evaluation Metrics
@@ -121,7 +135,7 @@ Continued-learning recovery:
 
 Per-seed recovery-window onset latencies were `9, 9, 1, 1, 9` for Q-learning seeds `11, 22, 33, 44, 55`, respectively. For the DQN baseline used here, the corresponding latencies were `51, 35, 40, 41, 27`.
 
-Across the five fixed seeds, both agents had 0% immediate post-disruption success. Under this fixed benchmark, neither learned pre-disruption greedy policy completed the disrupted route before post-disruption learning resumed. Continued-learning recovery was faster for Q-learning than for the DQN baseline used here; Q-learning also had higher overall success and route efficiency and lower cumulative regret. These results are benchmark-specific and should not be interpreted as general superiority of Q-learning over DQN.
+Across the five fixed seeds, both agents had 0% immediate post-disruption success. Under this fixed benchmark, neither learned pre-disruption greedy policy completed the disrupted route before post-disruption learning resumed, so recovery required continued post-disruption learning. Q-learning reached the predefined recovery-window onset earlier than the implemented DQN baseline across all five fixed seeds. These results do not imply general superiority of Q-learning over DQN.
 
 ## Figures
 
@@ -132,7 +146,17 @@ Generated from saved experiment outputs:
 - `results/figures/figure_3_recovery_after_disruption.png`
 - `results/figures/figure_4_agent_comparison.png`
 
-Figure 4 shows means across the five fixed seeds. Error bars represent standard deviations across seeds.
+![Evaluation return across training episodes](results/figures/figure_2_learning_curve.png)
+
+*Figure 2. Curves are 25-episode trailing rolling means of greedy evaluation return, computed separately per seed before aggregation; each line is the mean across five fixed seeds, shading is +/- 1 SD, and the disruption boundary is after episode 500.*
+
+![Recovery after route disruption](results/figures/figure_3_recovery_after_disruption.png)
+
+*Figure 3. Curves are 25-episode trailing rolling means of greedy route efficiency, computed separately per seed before aggregation; each line is the mean across five fixed seeds, shading is +/- 1 SD, and the disruption boundary is after episode 500.*
+
+![Q-learning and DQN aggregate comparison](results/figures/figure_4_agent_comparison.png)
+
+*Figure 4. Bars are means across the five fixed seeds, and error bars are sample standard deviations across seeds.*
 
 ## Reproducibility
 
@@ -145,23 +169,19 @@ The final verified experiment and test suite used Python `3.11.9` with the exact
 
 These pinned dependency versions are the versions used for the verified final experiment. Other Python or package versions are not verified for the reported results.
 
-Install the verified dependencies with:
+Compact reproducibility workflow:
 
 ```bash
+python3 -m venv .venv
+source .venv/bin/activate
 python3 -m pip install -r requirements.txt
-```
-
-Run tests:
-
-```bash
 python3 -m pytest -q
+python3 scripts/run_experiments.py --include-dqn
 ```
 
-Regenerate experiments and figures:
+The test command verifies implementation behavior. The experiment command regenerates the benchmark outputs and figures if reproduction of the saved results is desired.
 
-```bash
-python3 scripts/run_experiments.py --episodes 1000 --disruption-episode 500 --max-steps 40 --include-dqn
-```
+Use another compatible benchmark configuration with `--config PATH`. Explicit CLI overrides such as `--episodes`, `--disruption-episode`, and `--max-steps` take precedence over values loaded from the JSON file. Agent selection is intentionally controlled by the CLI: `--include-dqn` adds the DQN baseline.
 
 Saved per-seed outputs include configuration, episode-level records, summaries, and aggregate metrics:
 
@@ -183,10 +203,40 @@ Run Q-learning only:
 python3 scripts/run_experiments.py
 ```
 
+Run Q-learning with an alternate compatible configuration:
+
+```bash
+python3 scripts/run_experiments.py --config path/to/experiment.json
+```
+
 Run Q-learning and DQN:
 
 ```bash
 python3 scripts/run_experiments.py --include-dqn
+```
+
+## Repository Structure
+
+```text
+adaptive-urban-navigation-rl/
+├── .github/workflows/
+├── configs/
+├── results/
+│   ├── figures/
+│   └── metrics/
+├── scripts/
+├── src/
+│   ├── agents/
+│   ├── env/
+│   ├── evaluation/
+│   ├── training/
+│   └── visualization/
+├── tests/
+├── LICENSE
+├── PROJECT_BRIEF.md
+├── README.md
+├── pytest.ini
+└── requirements.txt
 ```
 
 ## Key Findings
@@ -200,11 +250,18 @@ python3 scripts/run_experiments.py --include-dqn
 
 ## Limitations
 
-- The environment is intentionally simple and deterministic.
-- The DQN baseline is small and not extensively tuned.
+- The environment is one intentionally simple, deterministic grid.
+- The benchmark uses one primary route-disruption topology.
+- The main experiment uses five fixed seeds and one primary hyperparameter configuration per agent.
+- The DQN baseline is intentionally small and not extensively tuned.
+- Recovery latency depends on the predefined recovery window and thresholds.
 - Results should not be interpreted as evidence about real human navigation.
 - Behavioural mechanisms such as stochastic choice or route familiarity are not validated cognitive models.
 - No favourable seed selection was performed; all required seeds are reported.
+
+## Citation
+
+This repository provides `CITATION.cff` so GitHub and citation tools can generate citation metadata. Please use that file if you cite this software or benchmark.
 
 ## Future Research Directions
 

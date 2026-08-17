@@ -283,9 +283,13 @@ Visualize the navigation environment, start, goal, and blocked routes.
 
 Show learning performance across training episodes.
 
-### Figure 3 — Adaptation after Disruption
+### Figure 3 — Recovery after Disruption
 
 Show performance before and after the route disruption.
+
+Immediate post-disruption robustness should be distinguished from continued-learning recovery after post-disruption training resumes.
+
+Do not imply that recovery-window onset is the exact episode when a new route was learned.
 
 Clearly mark the disruption episode.
 
@@ -318,7 +322,7 @@ Automated tests should cover at minimum:
 * evaluation metric calculations
 * DQN output dimensions when DQN is implemented
 
-The standard project test command should eventually be:
+The standard project test command is:
 
 `pytest -q`
 
@@ -329,11 +333,13 @@ The target structure is approximately:
 ```text
 adaptive-urban-navigation-rl/
 ├── README.md
-├── AGENTS.md
 ├── PROJECT_BRIEF.md
+├── LICENSE
 ├── requirements.txt
+├── pytest.ini
 ├── .gitignore
 ├── configs/
+├── scripts/
 ├── src/
 │   ├── env/
 │   ├── agents/
@@ -341,7 +347,6 @@ adaptive-urban-navigation-rl/
 │   ├── evaluation/
 │   └── visualization/
 ├── tests/
-├── notebooks/
 └── results/
     ├── figures/
     └── metrics/
@@ -406,7 +411,7 @@ The project is considered complete when:
 * the shortest-path oracle is verified
 * tabular Q-learning is implemented and evaluated
 * the disruption scenario works correctly
-* required adaptation metrics are implemented and tested
+* required recovery metrics are implemented and tested
 * main experiments run across multiple fixed seeds
 * configurations and outputs are saved
 * DQN is implemented and compared with Q-learning

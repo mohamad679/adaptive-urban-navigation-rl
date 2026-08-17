@@ -4,7 +4,6 @@ from __future__ import annotations
 
 from dataclasses import asdict, dataclass
 from pathlib import Path
-import csv
 import json
 from typing import Protocol
 
@@ -19,6 +18,7 @@ from src.evaluation.metrics import (
     summarize_records,
 )
 from src.evaluation.oracle import shortest_path
+from src.evaluation.io import write_records_csv
 
 
 class LearningAgent(Protocol):
@@ -50,7 +50,6 @@ class ExperimentConfig:
     episodes: int = 1000
     disruption_episode: int = 500
     max_steps_per_episode: int = 40
-    evaluation_interval: int = 25
     recovery_window: int = 25
     recovery_success_rate: float = 0.8
     recovery_efficiency: float = 0.75
@@ -269,8 +268,4 @@ def save_run_result(result: RunResult, output_dir: Path) -> None:
     if result.immediate_post_disruption_evaluation is not None:
         with (output_dir / "immediate_post_disruption_evaluation.json").open("w", encoding="utf-8") as handle:
             json.dump(asdict(result.immediate_post_disruption_evaluation), handle, indent=2, sort_keys=True)
-    with (output_dir / "episodes.csv").open("w", encoding="utf-8", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=list(asdict(result.records[0]).keys()), lineterminator="\n")
-        writer.writeheader()
-        for record in result.records:
-            writer.writerow(asdict(record))
+    write_records_csv(output_dir / "episodes.csv", result.records)

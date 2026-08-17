@@ -1,5 +1,4 @@
 {
-  "agent_types": ["q_learning", "dqn"],
   "disruption_episode": 500,
   "episodes": 1000,
   "max_steps_per_episode": 40,

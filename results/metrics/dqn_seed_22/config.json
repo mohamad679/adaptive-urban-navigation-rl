@@ -14,7 +14,6 @@
   "experiment": {
     "disruption_episode": 500,
     "episodes": 1000,
-    "evaluation_interval": 25,
     "max_steps_per_episode": 40,
     "recovery_efficiency": 0.75,
     "recovery_success_rate": 0.8,
