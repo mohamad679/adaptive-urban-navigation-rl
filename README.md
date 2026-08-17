@@ -1,5 +1,7 @@
 # Adaptive Urban Navigation with Reinforcement Learning under Route Disruptions
 
+[![Tests](https://github.com/mohamad679/adaptive-urban-navigation-rl/actions/workflows/tests.yml/badge.svg)](https://github.com/mohamad679/adaptive-urban-navigation-rl/actions/workflows/tests.yml)
+
 This repository is a small, reproducible research benchmark for studying how reinforcement-learning agents adapt after an unexpected route closure in a simplified urban-navigation environment.
 
 The project is deliberately modest: it is a deterministic computational benchmark, not a model of real human cognition or real urban mobility.
