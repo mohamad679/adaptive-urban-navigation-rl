@@ -2,6 +2,8 @@ cff-version: 1.2.0
 message: "If you use this software or benchmark in research, please cite it using the metadata in this file."
 type: software
 title: "Adaptive Urban Navigation with Reinforcement Learning under Route Disruptions"
+version: 1.0.0
+date-released: 2026-08-17
 authors:
   - given-names: Mohammad Javad
     family-names: Asgari
