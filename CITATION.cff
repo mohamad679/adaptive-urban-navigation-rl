@@ -3,8 +3,8 @@ message: "If you use this software or benchmark in research, please cite it usin
 type: software
 title: "Adaptive Urban Navigation with Reinforcement Learning under Route Disruptions"
 authors:
-  - given-names: Mohamad
-    family-names: Shamsi Jazeb
+  - given-names: Mohammad Javad
+    family-names: Asgari
 abstract: >
   A small reproducible reinforcement-learning benchmark for deterministic grid
   navigation under an unexpected route disruption. The repository includes
